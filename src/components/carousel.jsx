@@ -42,7 +42,6 @@ const Carousel = () => {
                 spaceBetween={30}
                 slidesPerView={1}
                 navigation
-                // pagination={{ clickable: true }}
                 className="w-3/4 mx-auto"
             >
                 {slides.map((slide, index) => (

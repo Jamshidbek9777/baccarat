@@ -97,7 +97,10 @@ const Navbar = () => {
                         <FaUser />
                     </button>
                     <button className="p-2 rounded-full hover:bg-gray-200">
-                        <FaPhone />
+                        <a href={'/contact'}>
+                            <FaPhone />
+                        </a>
+
                     </button>
                 </div>
             </div>
