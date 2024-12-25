@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaUser, FaPhone } from "react-icons/fa";
+import {useLocation} from "react-router-dom";
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -47,17 +49,24 @@ const Navbar = () => {
         },
     ];
 
+    // Define pages where the navbar should be non-transparent
+    const nonTransparentPages = "/products";
+    const isProductDetailPage = location.pathname.startsWith("/product/");
+    const isNonTransparent = nonTransparentPages.includes(location.pathname) || isProductDetailPage;
+
     return (
         <nav
             className={`fixed top-0 left-0 w-full z-30 transition-all duration-300 ${
-                isScrolled || isHovered ? "bg-white text-black shadow-md" : "bg-transparent text-white"
+                isScrolled || isHovered || isNonTransparent ? "bg-white text-black shadow-md" : "bg-transparent text-white"
             }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className="flex justify-between items-center px-6 py-4">
                 {/* Logo */}
-                <div className="text-2xl font-bold">Baccarat</div>
+                <div className="text-2xl font-bold cursor-pointer">
+                    <a href="/">Baccarat</a>
+                </div>
 
                 {/* Navigation Links */}
                 <ul className="hidden md:flex space-x-6">
@@ -67,7 +76,7 @@ const Navbar = () => {
                             {/* Mega Dropdown Menu */}
                             <div className="absolute left-0 hidden group-hover:flex flex-col bg-white shadow-lg py-4 px-6 w-[600px] border border-gray-200 z-20">
                                 <div className="flex justify-between">
-                                    {item.dropdown.columns.map((column, colIndex) => (
+                                    {item?.dropdown?.columns.map((column, colIndex) => (
                                         <div key={colIndex} className="w-1/2">
                                             <h4 className="font-bold mb-2">{column.heading}</h4>
                                             <ul>
@@ -86,6 +95,12 @@ const Navbar = () => {
                             </div>
                         </li>
                     ))}
+                    <li className="cursor-pointer">
+                        <a href="/about">About us</a>
+                    </li>
+                    <li className="cursor-pointer">
+                        <a href="/products">All products</a>
+                    </li>
                 </ul>
 
                 {/* Icons */}
@@ -97,10 +112,9 @@ const Navbar = () => {
                         <FaUser />
                     </button>
                     <button className="p-2 rounded-full hover:bg-gray-200">
-                        <a href={'/contact'}>
+                        <a href="/contact">
                             <FaPhone />
                         </a>
-
                     </button>
                 </div>
             </div>

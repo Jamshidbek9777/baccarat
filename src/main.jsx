@@ -5,6 +5,9 @@ import App from "./App.jsx";
 import Navbar from "./components/navbar.jsx";
 import Footer from "./components/footer.jsx";
 import ContactUs from "./pages/contact.jsx";
+import About from "./pages/about.jsx";
+import AllProducts from "./pages/products.jsx";
+import ProductDetails from "./pages/detail.jsx";
 
 
 const Root =()=>{
@@ -15,6 +18,9 @@ const Root =()=>{
                 <Routes>
                     <Route path="/" element={<App/>} exact/>
                     <Route path={'/contact'}  element={<ContactUs />} exact />
+                    <Route path={'/about'}  element={<About/>} exact />
+                    <Route path={'/products'} element={<AllProducts />} exact />
+                    <Route path={'/product/:id'} element={<ProductDetails />} exact />
                 </Routes>
                 <Footer/>
             </BrowserRouter>

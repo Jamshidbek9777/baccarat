@@ -1,10 +1,15 @@
-
 const ContactUs = () => {
     return (
         <div className="min-h-screen bg-gray-100 ">
             {/* Header */}
-            <div className="bg-gray-800 text-white py-10 pt-40" >
-                <div className="container mx-auto text-center">
+            <div
+                className="relative bg-cover bg-center text-white py-10 pt-40"
+                style={{
+                    backgroundImage: `url('/img/bg.jpg')`, // Replace with your background image URL
+                }}
+            >
+                <div className="absolute inset-0 bg-black bg-opacity-50"></div> {/* Overlay */}
+                <div className="relative container mx-auto text-center">
                     <h1 className="text-4xl font-bold">Contact Us</h1>
                     <p className="text-lg mt-2">We would love to hear from you!</p>
                 </div>
