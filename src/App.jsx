@@ -5,7 +5,7 @@ function App() {
       <>
 
         <div className="relative h-screen bg-black text-white">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/img/bg.jpg)' }}>
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/img/bg.webp)' }}>
             {/* Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           </div>
