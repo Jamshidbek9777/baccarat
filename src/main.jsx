@@ -11,6 +11,8 @@ import ProductDetails from "./pages/detail.jsx";
 import OsmanliProducts from "./pages/products/osmanli.jsx";
 import OsmanliD from "./pages/details/osmanliD.jsx";
 import {LanguageProvider} from "./context/language.jsx";
+import Anadolu from "./pages/products/anadolu.jsx";
+import AnadoluD from "./pages/details/anadoluD.jsx";
 
 
 const Root = () => {
@@ -25,8 +27,10 @@ const Root = () => {
                         <Route path={'/about'} element={<About/>} exact/>
                         <Route path={'/products'} element={<AllProducts/>} exact/>
                         <Route path={'/product/:id'} element={<ProductDetails/>} exact/>
-                        <Route path={'osmanli/:id'} element={<OsmanliD/>} exact/>
                         <Route path={'/osmanli'} element={<OsmanliProducts/>} exact/>
+                        <Route path={'osmanli/:id'} element={<OsmanliD/>} exact/>
+                        <Route path={'/anadolu'} element={<Anadolu/>} exact/>
+                        <Route path={'/anadolu/:id'} element={<AnadoluD/>} exact/>
                     </Routes>
                     <Footer/>
                 </BrowserRouter>

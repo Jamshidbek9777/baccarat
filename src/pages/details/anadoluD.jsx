@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import products from '../../data/osmanli.js';
+import products from '../../data/anadolu.js';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -38,11 +38,13 @@ const ProductDetails = () => {
                         <p className="text-indigo-600 font-semibold text-2xl mb-4">${product.price}</p>
 
 
+
                         {/* Add to Cart Button */}
-                        <button
-                            className="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-medium shadow-lg hover:bg-indigo-700 transition duration-300 mb-4">
+                        <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-medium shadow-lg hover:bg-indigo-700 transition duration-300 mb-4">
                             Sotib olish
                         </button>
+
+
 
 
                     </div>

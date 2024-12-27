@@ -1,7 +1,7 @@
-import {useState, useEffect, useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import {LanguageContext} from "../context/language.jsx";
-import {getText} from "../languages/index.js";
+import { LanguageContext } from "../context/language.jsx";
+import { getText } from "../languages/index.js";
 
 const Navbar = () => {
     const location = useLocation();
@@ -9,12 +9,16 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const [openDropdownIndex, setOpenDropdownIndex] = useState(null); // State to track open dropdown
 
-    const { selectedLanguage, selectedFlag, changeLanguage } =
-        useContext(LanguageContext);
+    const { selectedLanguage, selectedFlag, changeLanguage } = useContext(LanguageContext);
 
     const toggleMenu = () => {
         setMenuOpen((prev) => !prev);
+    };
+
+    const toggleDropdown = (index) => {
+        setOpenDropdownIndex((prev) => (prev === index ? null : index)); // Toggle dropdown
     };
 
     useEffect(() => {
@@ -35,7 +39,7 @@ const Navbar = () => {
                         heading: "",
                         links: [
                             <a href={"/osmanli"}>Osmanli</a>,
-                            "Anadolu medeniyetleri",
+                            <a href={"/anadolu"}>Anadolu medeniyetleri</a>,
                             "Mineli Camlar",
                             "Camda Mavi Beyaz",
                         ],
@@ -47,11 +51,10 @@ const Navbar = () => {
                 ],
             },
         },
-
     ];
 
-    const nonTransparentPages = ["/products", "/osmanli"];
-    const detailPagePrefixes = ["/product/", "/osmanli/"];
+    const nonTransparentPages = ["/products", "/osmanli", "/anadolu"];
+    const detailPagePrefixes = ["/product/", "/osmanli/", "/anadolu/"];
     const isProductDetailPage = detailPagePrefixes.some((prefix) =>
         location.pathname.startsWith(prefix)
     );
@@ -60,7 +63,6 @@ const Navbar = () => {
 
     return (
         <>
-
             <nav
                 className={`fixed top-0 left-0 w-full z-30 transition-all duration-300 ${
                     isScrolled || isHovered || isNonTransparent
@@ -70,9 +72,7 @@ const Navbar = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-
                 <div className="flex justify-between items-center px-6 py-4">
-
                     {/* Burger Icon for Mobile */}
                     <div
                         className={`burger ${isMenuOpen ? "open" : ""} block md:hidden`}
@@ -110,7 +110,7 @@ const Navbar = () => {
                                 <button className="hover:text-gray-700">{item.title}</button>
                                 {/* Mega Dropdown Menu */}
                                 <div
-                                    className="absolute left-0 hidden group-hover:flex flex-col bg-white shadow-lg py-4 px-6 w-[600px] border border-gray-200 z-20"
+                                    className="absolute left-0 hidden group-hover:flex flex-col bg-white shadow-lg py-4 px-6 w-[600px] border border-gray-200 z-20 rounded-lg"
                                 >
                                     <div className="flex justify-between">
                                         {item?.dropdown?.columns.map((column, colIndex) => (
@@ -141,17 +141,17 @@ const Navbar = () => {
                         </li>
                     </ul>
 
-                    {/* language selector */}
+                    {/* Language Selector */}
                     <div className="flex items-center gap-[5px] outline-none border-none cursor-pointer">
                         <img
                             src={selectedFlag}
-                            style={{width: "20px", objectFit: "cover"}}
+                            style={{ width: "20px", objectFit: "cover" }}
                         />
                         <select
                             className="bg-transparent border-none outline-none cursor-pointer"
                             onChange={(e) => changeLanguage(e.target.value)}
                             value={selectedLanguage}
-                        >
+                        >null
                             <option className="bg-[#fff] border-none" value="uz">
                                 Oʻzbek
                             </option>
@@ -162,57 +162,71 @@ const Navbar = () => {
                         </select>
                     </div>
                 </div>
-
-
             </nav>
 
-            {/* Mobile Menu */}
             <div
-                className={`w-3/4 fixed inset-0 bg-white/60 backdrop-blur-md z-50 transform transition-transform duration-300 ${
+                className={`w-3/4 fixed inset-0 bg-[#f9f9f9] z-50 transform transition-transform duration-300 ${
                     isMenuOpen ? "translate-x-0" : "-translate-x-full"
                 } md:hidden`}
             >
                 <div className="p-6 flex flex-col h-full">
                     {/* Close Button */}
                     <button
-                        className="self-end text-2xl font-bold mb-6"
+                        className="self-end text-2xl font-bold mb-6 text-red-500"
                         onClick={toggleMenu}
                     >
                         &times;
                     </button>
                     <ul className="flex flex-col space-y-4">
                         {menuItems.map((item, index) => (
-                            <li key={index} className="group">
+                            <li
+                                key={index}
+                                className="group border-b border-gray-300 pb-4 last:border-none"
+                            >
                                 <button
-                                    className="flex justify-between items-center w-full text-left"
-                                    onClick={() => {
-                                        setMenuOpen(false);
-                                    }}
+                                    className="flex justify-between items-center w-full text-left text-[#333] font-semibold hover:text-red-500"
+                                    onClick={() => toggleDropdown(index)}
                                 >
                                     {item.title}
+                                    <span
+                                        className={`ml-2 transform transition-transform ${
+                                            openDropdownIndex === index ? "rotate-180" : "rotate-0"
+                                        }`}
+                                    >
+                                        ▼
+                                    </span>
                                 </button>
-                                {/* Dropdown in Mobile */}
-                                <ul className="mt-2 space-y-2 pl-4">
-                                    {item.dropdown?.columns.map((column, colIndex) =>
-                                        column.links.map((link, linkIndex) => (
-                                            <li
-                                                key={`${colIndex}-${linkIndex}`}
-                                                className="text-sm hover:text-gray-700"
-                                            >
-                                                {link}
-                                            </li>
-                                        ))
-                                    )}
-                                </ul>
+                                {/* Mobile-Specific Dropdown */}
+                                {openDropdownIndex === index && (
+                                    <ul className="mt-2 space-y-2 pl-4 bg-gray-100 rounded-lg py-2">
+                                        {item.dropdown?.columns.map((column, colIndex) =>
+                                            column.links.map((link, linkIndex) => (
+                                                <li
+                                                    key={`${colIndex}-${linkIndex}`}
+                                                    className="text-sm text-gray-600 hover:text-blue-500"
+                                                >
+                                                    {link}
+                                                </li>
+                                            ))
+                                        )}
+                                    </ul>
+                                )}
                             </li>
                         ))}
+                        {/* Additional Static Links */}
                         <li>
-                            <a href="/about" className="hover:text-gray-700">
+                            <a
+                                href="/about"
+                                className="hover:text-red-500 text-[#333] font-medium"
+                            >
                                 About us
                             </a>
                         </li>
                         <li>
-                            <a href="/products" className="hover:text-gray-700">
+                            <a
+                                href="/products"
+                                className="hover:text-red-500 text-[#333] font-medium"
+                            >
                                 All products
                             </a>
                         </li>
@@ -220,7 +234,6 @@ const Navbar = () => {
                 </div>
             </div>
         </>
-
     );
 };
 
